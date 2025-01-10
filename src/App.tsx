@@ -1,15 +1,43 @@
 import React, { useState, useEffect } from 'react'
-import { AppBar, Tabs, Tab, Box, Container, Typography } from '@mui/material'
-
+import {
+  AppBar,
+  Tabs,
+  Tab,
+  Box,
+  Typography,
+  useTheme,
+} from '@mui/material'
+import SwipeableViews from 'react-swipeable-views'
 import axios from 'axios'
 import AddPatient from './components/AddPatient'
 import PatientList from './components/PatientList'
 
+function TabPanel(props: any) {
+  const { children, value, index, ...other } = props
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`full-width-tabpanel-${index}`}
+      aria-labelledby={`full-width-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  )
+}
+
 const App: React.FC = () => {
+  const theme = useTheme()
   const [tabIndex, setTabIndex] = useState(0)
   const [patients, setPatients] = useState<any[]>([])
 
-  // Fetch patients
+  // Fetch patients from API
   const fetchPatients = () => {
     axios
       .get('http://localhost:5000/api/patients')
@@ -19,9 +47,9 @@ const App: React.FC = () => {
 
   useEffect(() => {
     fetchPatients()
-  }, []) // Fetch patients on initial render
+  }, [])
 
-  // Handle adding a new patient
+
   const handleAddPatient = (newPatient: any) => {
     setPatients((prevPatients) => [...prevPatients, newPatient])
   }
@@ -33,44 +61,57 @@ const App: React.FC = () => {
     setTabIndex(newTabIndex)
   }
 
+  const handleChangeIndex = (index: number) => {
+    setTabIndex(index)
+  }
+
   return (
     <div>
       {/* Header with Tabs */}
-      <AppBar position="sticky">
+      <AppBar position="static">
         <Tabs
           value={tabIndex}
           onChange={handleTabChange}
+          indicatorColor="secondary"
+          textColor="inherit"
+          variant="fullWidth"
           aria-label="patient-management-tabs"
-          centered
         >
-          <Tab label="Add New Patient" />
-          <Tab label="Patients" />
+          <Tab
+            label="Add New Patient"
+            id="full-width-tab-0"
+            aria-controls="full-width-tabpanel-0"
+          />
+          <Tab
+            label="Patients"
+            id="full-width-tab-1"
+            aria-controls="full-width-tabpanel-1"
+          />
         </Tabs>
       </AppBar>
 
-      {/* Content of Tabs */}
-      <Box sx={{ padding: 3 }}>
-        <Container>
-          {tabIndex === 0 && (
-            <Box>
-              <Typography variant="h5" gutterBottom>
-                Patient Details
-              </Typography>
-              <AddPatient onAddPatient={handleAddPatient} />
-            </Box>
-          )}
+      {/* Swipeable Views for Tab Content */}
+      <SwipeableViews
+        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+        index={tabIndex}
+        onChangeIndex={handleChangeIndex}
+      >
+        {/* Tab 1: Add Patient */}
+        <TabPanel value={tabIndex} index={0} dir={theme.direction}>
+          <Typography variant="h5" gutterBottom>
+            Patient Details
+          </Typography>
+          <AddPatient onAddPatient={handleAddPatient} />
+        </TabPanel>
 
-          {/* Tab 2: Patients (Search and List of Patients) */}
-          {tabIndex === 1 && (
-            <Box>
-              <Typography variant="h5" gutterBottom>
-                Patients
-              </Typography>
-              <PatientList patients={patients} />
-            </Box>
-          )}
-        </Container>
-      </Box>
+        {/* Tab 2: Patients (Search and List of Patients) */}
+        <TabPanel value={tabIndex} index={1} dir={theme.direction}>
+          <Typography variant="h5" gutterBottom>
+            Patients
+          </Typography>
+          <PatientList patients={patients} />
+        </TabPanel>
+      </SwipeableViews>
     </div>
   )
 }
