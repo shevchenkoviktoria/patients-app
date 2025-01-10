@@ -14,17 +14,32 @@ import {
 } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
+import axios from 'axios'
 
 type PatientListProps = {
   patients: any[]
+  onDeletePatient: (id: number) => void
 }
 
-const PatientList: React.FC<PatientListProps> = ({ patients }) => {
+const PatientList: React.FC<PatientListProps> = ({
+  patients,
+  onDeletePatient,
+}) => {
   const [search, setSearch] = React.useState('')
 
   const filteredPatients = patients.filter((patient) =>
     patient.name.toLowerCase().includes(search.toLowerCase())
   )
+
+  const handleDelete = (id: number) => {
+    axios
+      .delete(`http://localhost:5000/api/patients/${id}`)
+      .then(() => {
+        onDeletePatient(id) // Update the parent component's state
+        alert('Patient deleted successfully')
+      })
+      .catch((error) => console.error('Error deleting patient', error))
+  }
 
   return (
     <>
@@ -76,11 +91,7 @@ const PatientList: React.FC<PatientListProps> = ({ patients }) => {
                         <IconButton
                           size="small"
                           color="primary"
-                          onClick={() =>
-                            alert(
-                              `Are you sure you want to delete ${patient.name}? This action can not be undone`
-                            )
-                          }
+                          onClick={() => handleDelete(patient.id)}
                         >
                           <DeleteIcon />
                         </IconButton>

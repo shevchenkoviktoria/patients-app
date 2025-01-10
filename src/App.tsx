@@ -56,6 +56,12 @@ const App: React.FC = () => {
   const handleChangeIndex = (index: number) => {
     setTabIndex(index)
   }
+  
+  const handleDeletePatient = (id: number) => {
+    setPatients((prevPatients) =>
+      prevPatients.filter((patient) => patient.id !== id)
+    )
+  }
 
   return (
     <div>
@@ -111,7 +117,10 @@ const App: React.FC = () => {
           <Typography variant="h5" gutterBottom>
             Patients
           </Typography>
-          <PatientList patients={patients} />
+          <PatientList
+            patients={patients}
+            onDeletePatient={handleDeletePatient}
+          />
         </TabPanel>
       </SwipeableViews>
     </div>
