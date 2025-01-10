@@ -1,37 +1,37 @@
-import React, { useState, useEffect } from "react";
-import { AppBar, Tabs, Tab, Box, Container, Typography } from "@mui/material";
+import React, { useState, useEffect } from 'react'
+import { AppBar, Tabs, Tab, Box, Container, Typography } from '@mui/material'
 
-import axios from "axios";
-import AddPatient from "./components/AddPatient";
-import PatientList from "./components/PatientList";
+import axios from 'axios'
+import AddPatient from './components/AddPatient'
+import PatientList from './components/PatientList'
 
 const App: React.FC = () => {
-  const [tabIndex, setTabIndex] = useState(0);
-  const [patients, setPatients] = useState<any[]>([]);
+  const [tabIndex, setTabIndex] = useState(0)
+  const [patients, setPatients] = useState<any[]>([])
 
   // Fetch patients
   const fetchPatients = () => {
     axios
-      .get("http://localhost:5000/api/patients")
+      .get('http://localhost:5000/api/patients')
       .then((response) => setPatients(response.data))
-      .catch((error) => console.error("Error fetching patients", error));
-  };
+      .catch((error) => console.error('Error fetching patients', error))
+  }
 
   useEffect(() => {
-    fetchPatients();
-  }, []); // Fetch patients on initial render
+    fetchPatients()
+  }, []) // Fetch patients on initial render
 
   // Handle adding a new patient
   const handleAddPatient = (newPatient: any) => {
-    setPatients((prevPatients) => [...prevPatients, newPatient]);
-  };
+    setPatients((prevPatients) => [...prevPatients, newPatient])
+  }
 
   const handleTabChange = (
     event: React.SyntheticEvent,
     newTabIndex: number
   ) => {
-    setTabIndex(newTabIndex);
-  };
+    setTabIndex(newTabIndex)
+  }
 
   return (
     <div>
@@ -72,7 +72,7 @@ const App: React.FC = () => {
         </Container>
       </Box>
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App

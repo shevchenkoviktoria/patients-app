@@ -1,33 +1,33 @@
-import React, { useState } from "react";
-import { TextField, Button, Box, Stack } from "@mui/material";
-import axios from "axios";
+import React, { useState } from 'react'
+import { TextField, Button, Box, Stack } from '@mui/material'
+import axios from 'axios'
 
 type AddPatientProps = {
-  onAddPatient: (newPatient: any) => void;
-};
+  onAddPatient: (newPatient: any) => void
+}
 
 const AddPatient: React.FC<AddPatientProps> = ({ onAddPatient }) => {
-  const [name, setName] = useState("");
-  const [dob, setDob] = useState("");
-  const [condition, setCondition] = useState("");
-  const [appointmentDate, setAppointmentDate] = useState("");
+  const [name, setName] = useState('')
+  const [dob, setDob] = useState('')
+  const [condition, setCondition] = useState('')
+  const [appointmentDate, setAppointmentDate] = useState('')
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const newPatient = { name, dob, condition, appointmentDate };
+    e.preventDefault()
+    const newPatient = { name, dob, condition, appointmentDate }
 
     axios
-      .post("http://localhost:5000/api/patients", newPatient)
+      .post('http://localhost:5000/api/patients', newPatient)
       .then((response) => {
-        onAddPatient(response.data);
-        setName("");
-        setDob("");
-        setCondition("");
-        setAppointmentDate("");
-        alert("Patient added successfully");
+        onAddPatient(response.data)
+        setName('')
+        setDob('')
+        setCondition('')
+        setAppointmentDate('')
+        alert('Patient added successfully')
       })
-      .catch((error) => console.error("Error adding patient", error));
-  };
+      .catch((error) => console.error('Error adding patient', error))
+  }
 
   return (
     <Box sx={{ marginTop: 3 }}>
@@ -94,7 +94,7 @@ const AddPatient: React.FC<AddPatientProps> = ({ onAddPatient }) => {
         </Stack>
       </form>
     </Box>
-  );
-};
+  )
+}
 
-export default AddPatient;
+export default AddPatient

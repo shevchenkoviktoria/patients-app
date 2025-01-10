@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 import {
   TextField,
   Box,
@@ -11,19 +11,20 @@ import {
   TableRow,
   Tooltip,
   IconButton,
-} from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
+} from '@mui/material'
+import EditIcon from '@mui/icons-material/Edit'
+import DeleteIcon from '@mui/icons-material/Delete'
 
 type PatientListProps = {
-  patients: any[];
-};
+  patients: any[]
+}
 
 const PatientList: React.FC<PatientListProps> = ({ patients }) => {
-  const [search, setSearch] = React.useState("");
+  const [search, setSearch] = React.useState('')
 
   const filteredPatients = patients.filter((patient) =>
     patient.name.toLowerCase().includes(search.toLowerCase())
-  );
+  )
 
   return (
     <Box sx={{ marginTop: 3 }}>
@@ -60,10 +61,24 @@ const PatientList: React.FC<PatientListProps> = ({ patients }) => {
                   <TableCell>
                     <Tooltip title="Edit Patient Info">
                       <IconButton
+                        size="small"
                         color="primary"
                         onClick={() => alert(`Editing patient ${patient.name}`)}
                       >
                         <EditIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Delete Patient Info">
+                      <IconButton
+                        size="small"
+                        color="primary"
+                        onClick={() =>
+                          alert(
+                            `Are you sure you want to delete ${patient.name}? This action can not be undone`
+                          )
+                        }
+                      >
+                        <DeleteIcon />
                       </IconButton>
                     </Tooltip>
                   </TableCell>
@@ -74,7 +89,7 @@ const PatientList: React.FC<PatientListProps> = ({ patients }) => {
         </TableContainer>
       )}
     </Box>
-  );
-};
+  )
+}
 
-export default PatientList;
+export default PatientList
