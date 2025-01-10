@@ -10,7 +10,7 @@ const port = process.env.PORT || 5000
 // Middleware
 app.use(express.json())
 
-// Database connection (using SQLite)
+// Database SQLite
 const db = new sqlite3.Database(process.env.DB_PATH, (err) => {
   if (err) {
     console.error('Database connection failed: ', err.message)
@@ -21,20 +21,20 @@ const db = new sqlite3.Database(process.env.DB_PATH, (err) => {
 
 // Routes
 
-// Get all patients
+//Get all patients
 app.get('/api/patients', (req, res) => {
   db.all('SELECT * FROM patients', [], (err, rows) => {
     if (err) {
-      console.error('Error fetching patients:', err.message) // Log the error message
+      console.error('Error fetching patients:', err.message)
       res.status(500).send('Error fetching patients')
     } else {
-      console.log('Fetched patients:', rows) // Log the result of the query
+      console.log('Fetched patients:', rows)
       res.json(rows)
     }
   })
 })
 
-// Add a new patient
+//Add a new patient
 app.post('/api/patients', (req, res) => {
   const { name, dob, condition, appointmentDate } = req.body
   const query =
@@ -70,7 +70,6 @@ app.delete('/api/patients/:id', (req, res) => {
   })
 })
 
-// Start the server
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`)
 })
