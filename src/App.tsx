@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import {
-  AppBar,
-  Tabs,
-  Tab,
-  Box,
-  Typography,
-  useTheme,
-} from '@mui/material'
+import { AppBar, Tabs, Tab, Box, Typography, useTheme } from '@mui/material'
 import SwipeableViews from 'react-swipeable-views'
 import axios from 'axios'
 import AddPatient from './components/AddPatient'
@@ -49,7 +42,6 @@ const App: React.FC = () => {
     fetchPatients()
   }, [])
 
-
   const handleAddPatient = (newPatient: any) => {
     setPatients((prevPatients) => [...prevPatients, newPatient])
   }
@@ -85,6 +77,16 @@ const App: React.FC = () => {
           <Tab
             label="Patients"
             id="full-width-tab-1"
+            aria-controls="full-width-tabpanel-1"
+          />
+          <Tab
+            label="Appointments"
+            id="full-width-tab-2"
+            aria-controls="full-width-tabpanel-1"
+          />
+          <Tab
+            label="Settings"
+            id="full-width-tab-3"
             aria-controls="full-width-tabpanel-1"
           />
         </Tabs>
