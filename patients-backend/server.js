@@ -28,7 +28,6 @@ app.get('/api/patients', (req, res) => {
       console.error('Error fetching patients:', err.message)
       res.status(500).send('Error fetching patients')
     } else {
-      console.log('Fetched patients:', rows)
       res.json(rows)
     }
   })

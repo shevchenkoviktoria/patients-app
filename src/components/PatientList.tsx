@@ -35,7 +35,7 @@ const PatientList: React.FC<PatientListProps> = ({
     axios
       .delete(`http://localhost:5000/api/patients/${id}`)
       .then(() => {
-        onDeletePatient(id) // Update the parent component's state
+        onDeletePatient(id)
         alert('Patient deleted successfully')
       })
       .catch((error) => console.error('Error deleting patient', error))
