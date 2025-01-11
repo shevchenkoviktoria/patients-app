@@ -1,40 +1,26 @@
 import React, { useState, useEffect } from 'react'
-import { AppBar, Tabs, Tab, Box, Typography, useTheme } from '@mui/material'
-import SwipeableViews from 'react-swipeable-views'
+import { AppBar, Tabs, Tab, Box, Container, Typography } from '@mui/material'
 import axios from 'axios'
 import AddPatient from './components/AddPatient'
 import PatientList from './components/PatientList'
-
-function TabPanel(props: any) {
-  const { children, value, index, ...other } = props
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`full-width-tabpanel-${index}`}
-      aria-labelledby={`full-width-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  )
-}
+import AppointmentList from './components/AppointmentList'
 
 const App: React.FC = () => {
-  const theme = useTheme()
   const [tabIndex, setTabIndex] = useState(0)
   const [patients, setPatients] = useState<any[]>([])
+  const [appointments, setAppointments] = useState<any[]>([])
 
-  // Fetch patients from API
   const fetchPatients = () => {
     axios
       .get('http://localhost:5000/api/patients')
-      .then((response) => setPatients(response.data))
+      .then((response) => {
+        setPatients(response.data)
+        const appointmentData = response.data.map((patient: any) => ({
+          name: patient.name,
+          nextAppointment: patient.nextAppointment,
+        }))
+        setAppointments(appointmentData)
+      })
       .catch((error) => console.error('Error fetching patients', error))
   }
 
@@ -44,6 +30,21 @@ const App: React.FC = () => {
 
   const handleAddPatient = (newPatient: any) => {
     setPatients((prevPatients) => [...prevPatients, newPatient])
+    setAppointments((prevAppointments) => [
+      ...prevAppointments,
+      { name: newPatient.name, nextAppointment: newPatient.nextAppointment },
+    ])
+  }
+
+  const handleDeletePatient = (patientId: string) => {
+    axios
+      .delete(`http://localhost:5000/api/patients/${patientId}`)
+      .then(() => {
+        setPatients((prevPatients) =>
+          prevPatients.filter((patient) => patient.id !== patientId)
+        )
+      })
+      .catch((error) => console.error('Error deleting patient', error))
   }
 
   const handleTabChange = (
@@ -52,77 +53,88 @@ const App: React.FC = () => {
   ) => {
     setTabIndex(newTabIndex)
   }
-
-  const handleChangeIndex = (index: number) => {
-    setTabIndex(index)
-  }
-  
-  const handleDeletePatient = (id: number) => {
-    setPatients((prevPatients) =>
-      prevPatients.filter((patient) => patient.id !== id)
-    )
-  }
-
   return (
     <div>
-      {/* Header with Tabs */}
-      <AppBar position="static">
+      <AppBar position="sticky">
         <Tabs
           value={tabIndex}
           onChange={handleTabChange}
-          indicatorColor="secondary"
-          textColor="inherit"
-          variant="fullWidth"
           aria-label="patient-management-tabs"
+          centered
+          indicatorColor="primary"
+          textColor="primary"
         >
           <Tab
             label="Add New Patient"
-            id="full-width-tab-0"
-            aria-controls="full-width-tabpanel-0"
+            sx={{
+              fontWeight: tabIndex === 0 ? 'bold' : 'normal',
+              color: tabIndex === 0 ? 'primary.main' : 'text.primary',
+              textTransform: 'none',
+            }}
           />
           <Tab
             label="Patients"
-            id="full-width-tab-1"
-            aria-controls="full-width-tabpanel-1"
+            sx={{
+              fontWeight: tabIndex === 1 ? 'bold' : 'normal',
+              color: tabIndex === 1 ? 'primary.main' : 'text.primary',
+              textTransform: 'none',
+            }}
           />
           <Tab
             label="Appointments"
-            id="full-width-tab-2"
-            aria-controls="full-width-tabpanel-1"
+            sx={{
+              fontWeight: tabIndex === 1 ? 'bold' : 'normal',
+              color: tabIndex === 1 ? 'primary.main' : 'text.primary',
+              textTransform: 'none',
+            }}
           />
           <Tab
             label="Settings"
-            id="full-width-tab-3"
-            aria-controls="full-width-tabpanel-1"
+            sx={{
+              fontWeight: tabIndex === 1 ? 'bold' : 'normal',
+              color: tabIndex === 1 ? 'primary.main' : 'text.primary',
+              textTransform: 'none',
+            }}
           />
         </Tabs>
       </AppBar>
 
-      {/* Swipeable Views for Tab Content */}
-      <SwipeableViews
-        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-        index={tabIndex}
-        onChangeIndex={handleChangeIndex}
-      >
-        {/* Tab 1: Add Patient */}
-        <TabPanel value={tabIndex} index={0} dir={theme.direction}>
-          <Typography variant="h5" gutterBottom>
-            Patient Details
-          </Typography>
-          <AddPatient onAddPatient={handleAddPatient} />
-        </TabPanel>
+      <Box sx={{ padding: 3 }}>
+        <Container>
+          {tabIndex === 0 && (
+            <Box>
+              <Typography variant="h5" gutterBottom>
+                Patient Details
+              </Typography>
+              <AddPatient onAddPatient={handleAddPatient} />
+            </Box>
+          )}
 
-        {/* Tab 2: Patients (Search and List of Patients) */}
-        <TabPanel value={tabIndex} index={1} dir={theme.direction}>
-          <Typography variant="h5" gutterBottom>
-            Patients
-          </Typography>
-          <PatientList
-            patients={patients}
-            onDeletePatient={handleDeletePatient}
-          />
-        </TabPanel>
-      </SwipeableViews>
+          {tabIndex === 1 && (
+            <Box>
+              <Typography variant="h5" gutterBottom>
+                Patients
+              </Typography>
+              <PatientList
+                patients={patients}
+                onDeletePatient={handleDeletePatient}
+              />
+            </Box>
+          )}
+          {tabIndex === 2 && (
+            <Box>
+              <AppointmentList appointments={appointments} />
+            </Box>
+          )}
+          {tabIndex === 3 && (
+            <Box>
+              <Typography variant="h5" gutterBottom>
+                Settings
+              </Typography>
+            </Box>
+          )}
+        </Container>
+      </Box>
     </div>
   )
 }

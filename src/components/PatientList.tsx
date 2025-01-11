@@ -18,7 +18,7 @@ import axios from 'axios'
 
 type PatientListProps = {
   patients: any[]
-  onDeletePatient: (id: number) => void
+  onDeletePatient: (id: string) => void
 }
 
 const PatientList: React.FC<PatientListProps> = ({
@@ -31,7 +31,7 @@ const PatientList: React.FC<PatientListProps> = ({
     patient.name.toLowerCase().includes(search.toLowerCase())
   )
 
-  const handleDelete = (id: number) => {
+  const handleDelete = (id: string) => {
     axios
       .delete(`http://localhost:5000/api/patients/${id}`)
       .then(() => {
