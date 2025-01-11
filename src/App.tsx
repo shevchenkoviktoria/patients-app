@@ -32,7 +32,7 @@ const App: React.FC = () => {
     setPatients((prevPatients) => [...prevPatients, newPatient])
     setAppointments((prevAppointments) => [
       ...prevAppointments,
-      { name: newPatient.name, nextAppointment: newPatient.nextAppointment },
+      { name: newPatient.name, nextAppointment: newPatient.appointmentDate },
     ])
   }
 
@@ -53,6 +53,7 @@ const App: React.FC = () => {
   ) => {
     setTabIndex(newTabIndex)
   }
+
   return (
     <div>
       <AppBar position="sticky">
@@ -63,6 +64,10 @@ const App: React.FC = () => {
           centered
           indicatorColor="primary"
           textColor="primary"
+          sx={{
+            transition: 'transform 0.3s ease',
+            boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
+          }}
         >
           <Tab
             label="Add New Patient"
@@ -83,23 +88,29 @@ const App: React.FC = () => {
           <Tab
             label="Appointments"
             sx={{
-              fontWeight: tabIndex === 1 ? 'bold' : 'normal',
-              color: tabIndex === 1 ? 'primary.main' : 'text.primary',
+              fontWeight: tabIndex === 2 ? 'bold' : 'normal',
+              color: tabIndex === 2 ? 'primary.main' : 'text.primary',
               textTransform: 'none',
             }}
           />
           <Tab
             label="Settings"
             sx={{
-              fontWeight: tabIndex === 1 ? 'bold' : 'normal',
-              color: tabIndex === 1 ? 'primary.main' : 'text.primary',
+              fontWeight: tabIndex === 3 ? 'bold' : 'normal',
+              color: tabIndex === 3 ? 'primary.main' : 'text.primary',
               textTransform: 'none',
             }}
           />
         </Tabs>
       </AppBar>
 
-      <Box sx={{ padding: 3 }}>
+      <Box
+        sx={{
+          padding: 3,
+          transition: 'opacity 0.5s ease',
+          opacity: tabIndex !== null ? 1 : 0, // Smooth fade in/out effect
+        }}
+      >
         <Container>
           {tabIndex === 0 && (
             <Box>
