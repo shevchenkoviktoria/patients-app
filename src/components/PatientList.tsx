@@ -9,11 +9,9 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Tooltip,
+
   IconButton,
 } from '@mui/material'
-import EditIcon from '@mui/icons-material/Edit'
-import DeleteIcon from '@mui/icons-material/Delete'
 import axios from 'axios'
 
 type PatientListProps = {
@@ -59,7 +57,7 @@ const PatientList: React.FC<PatientListProps> = ({
             No patients found.
           </Typography>
         ) : (
-          <TableContainer>
+          <TableContainer sx={{ maxWidth: 500 }}>
             <Table>
               <TableHead>
                 <TableRow>
@@ -76,26 +74,23 @@ const PatientList: React.FC<PatientListProps> = ({
                     <TableCell>{patient.dob}</TableCell>
                     <TableCell>{patient.condition}</TableCell>
                     <TableCell>
-                      <Tooltip title="Edit Patient Info">
-                        <IconButton
-                          size="small"
-                          color="primary"
-                          onClick={() =>
-                            alert(`Editing patient ${patient.name}`)
-                          }
-                        >
-                          <EditIcon />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title="Delete Patient Info">
-                        <IconButton
-                          size="small"
-                          color="primary"
-                          onClick={() => handleDelete(patient.id)}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                      </Tooltip>
+                      <IconButton
+                        sx={{ fontSize: 12 }}
+                        size="small"
+                        color="primary"
+                        onClick={() => alert(`Editing patient ${patient.name}`)}
+                      >
+                        Edit
+                      </IconButton>
+
+                      <IconButton
+                        sx={{ fontSize: 12, color: 'red' }}
+                        size="small"
+                        color="primary"
+                        onClick={() => handleDelete(patient.id)}
+                      >
+                        Delete
+                      </IconButton>
                     </TableCell>
                   </TableRow>
                 ))}

@@ -14,7 +14,7 @@ const AppointmentList: React.FC<AppointmentListProps> = ({ appointments }) => {
           <ListItem key={index}>
             <ListItemText
               primary={`Patient: ${appointment.name}`}
-              secondary={`Next Appointment: ${appointment.nextAppointment}`}
+              secondary={`Next Appointment: ${appointment.appointmentDate}`}
             />
           </ListItem>
         ))}

@@ -17,7 +17,7 @@ const App: React.FC = () => {
         setPatients(response.data)
         const appointmentData = response.data.map((patient: any) => ({
           name: patient.name,
-          nextAppointment: patient.nextAppointment,
+          nextAppointment: patient.appointmentDate,
         }))
         setAppointments(appointmentData)
       })
