@@ -27,7 +27,8 @@ describe('AddPatient Component', () => {
     fireEvent.change(conditionInput, { target: { value: 'Flu' } })
     fireEvent.change(appointmentDateInput, { target: { value: '2024-05-01' } })
 
-    axiosPostMock({
+    // Mock the axios POST request to resolve successfully
+    axiosPostMock.mockResolvedValue({
       data: {
         id: '123',
         name: 'John Doe',
@@ -37,8 +38,14 @@ describe('AddPatient Component', () => {
       },
     })
 
+    // Click the submit button
     fireEvent.click(submitButton)
 
+    // Wait for the success message to appear
+    const successMessage = await screen.findByText('Patient added successfully')
+    expect(successMessage).toBeInTheDocument()
+
+    // Check if axios POST was called with the correct data
     expect(axios.post).toHaveBeenCalledWith(
       'http://localhost:5000/api/patients',
       expect.objectContaining({
@@ -49,8 +56,7 @@ describe('AddPatient Component', () => {
       })
     )
 
-    await screen.findByText('Patient added successfully')
-
+    // Check if the callback function was called
     expect(mockOnAddPatient).toHaveBeenCalledTimes(1)
   })
 })
