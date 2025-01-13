@@ -26,11 +26,6 @@
     "ts-jest": "^29.2.5",
     "@types/jest": "^29.5.14"
   },
-  "jest": {
-    "transform": {
-      "^.+\\.(ts|tsx)$": "ts-jest"
-    }
-  },
   "browserslist": {
     "production": [
       ">0.2%",
