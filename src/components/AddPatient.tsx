@@ -3,7 +3,6 @@ import { TextField, Button, Box, Stack } from '@mui/material'
 import axios from 'axios'
 import { Patients } from '../types/Patients'
 
-
 type AddPatientProps = {
   onAddPatient: (newPatient: Patients[]) => void
 }
@@ -17,7 +16,6 @@ const AddPatient: React.FC<AddPatientProps> = ({ onAddPatient }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    // Create new patient object
     const newPatient: Patients = {
       name,
       dob,
@@ -32,10 +30,8 @@ const AddPatient: React.FC<AddPatientProps> = ({ onAddPatient }) => {
         newPatient
       )
 
-      // Use onAddPatient with the returned patient data from API response
       onAddPatient(response.data)
 
-      // Clear form after submitting
       setName('')
       setDob('')
       setCondition('')
@@ -70,8 +66,10 @@ const AddPatient: React.FC<AddPatientProps> = ({ onAddPatient }) => {
             onChange={(e) => setDob(e.target.value)}
             required
             sx={{ maxWidth: 500 }}
-            InputLabelProps={{
-              shrink: true,
+            slotProps={{
+              inputLabel: {
+                shrink: true,
+              },
             }}
           />
           <TextField
@@ -94,8 +92,10 @@ const AddPatient: React.FC<AddPatientProps> = ({ onAddPatient }) => {
             onChange={(e) => setAppointmentDate(e.target.value)}
             required
             sx={{ maxWidth: 500 }}
-            InputLabelProps={{
-              shrink: true,
+            slotProps={{
+              inputLabel: {
+                shrink: true,
+              },
             }}
           />
           <Stack direction="row" spacing={2}>

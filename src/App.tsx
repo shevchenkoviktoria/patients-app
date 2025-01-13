@@ -45,6 +45,7 @@ const App: React.FC = () => {
         )
       })
       .catch((error) => console.error('Error deleting patient', error))
+    window.location.reload() //better to use useQuery
   }
 
   const handleTabChange = (
