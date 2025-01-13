@@ -1,6 +1,6 @@
 # Patient Management Application
 
-This is a full-stack Patient Management Application developed using React (frontend) and Node.js with Express and MySQL (backend). It allows users to manage patient records including adding, editing, deleting, and viewing patient details.
+This is a full-stack Patient Management Application developed using React (frontend) and Node.js with Express and SQLite (backend). It allows users to manage patient records, including adding, editing, deleting, and viewing patient details.
 <img width="1486" alt="image" src="https://github.com/user-attachments/assets/ce04d80b-b2fe-46e7-b6f6-20ea845c1da5" />
 
 <img width="1503" alt="image" src="https://github.com/user-attachments/assets/81c8b7f4-c78c-4c28-9226-57f560624df6" />
