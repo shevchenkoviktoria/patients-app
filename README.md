@@ -77,23 +77,29 @@ The app will be available at `http://localhost:3000`.
 
 ### Database Setup
 
-The backend uses SQLite as a lightweight database. If the database file (patients.db) does not exist, it will be created automatically. To manually create the database, use the following schema:
+The backend uses SQLite, a lightweight database. If the database file (patients.db) does not already exist, it will be created automatically when you run the project.
 
+Manual Database Creation:
+If you need to manually create the database, you can use the following schema:
+
+-- Create the patients table
 CREATE TABLE patients (
-id INTEGER PRIMARY KEY AUTOINCREMENT,
-name TEXT NOT NULL,
-dob TEXT NOT NULL,
-condition TEXT NOT NULL,
-appointment_date TEXT NOT NULL
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    dob TEXT NOT NULL,
+    condition TEXT NOT NULL,
+    appointment_date TEXT NOT NULL
 );
 
+-- Create the appointments table with a foreign key reference
 CREATE TABLE appointments (
-id INTEGER PRIMARY KEY AUTOINCREMENT,
-patient_id INTEGER,
-appointment_date TEXT NOT NULL,
-details TEXT,
-FOREIGN KEY(patient_id) REFERENCES patients(id)
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    patient_id INTEGER,
+    appointment_date TEXT NOT NULL,
+    details TEXT,
+    FOREIGN KEY(patient_id) REFERENCES patients(id)
 );
+
 #### Open http://localhost:3000 in your browser
 
 ### API Endpoints
