@@ -141,7 +141,7 @@ const PatientList: React.FC<PatientListProps> = ({
           </TableContainer>
         )}
       </Box>
-
+      {/* better to create shared component  */}
       <Modal
         open={editModalOpen}
         onClose={() => setEditModalOpen(false)}
@@ -192,12 +192,16 @@ const PatientList: React.FC<PatientListProps> = ({
           <TextField
             fullWidth
             type="date"
-            label="Appointment Date"
+            label="Date of Birth"
             variant="outlined"
             value={updatedAppointmentDate}
             onChange={(e) => setUpdatedAppointmentDate(e.target.value)}
             margin="normal"
-            sx={{ maxWidth: 500 }}
+            slotProps={{
+              inputLabel: {
+                shrink: true,
+              },
+            }}
           />
 
           <Box sx={{ marginTop: 2 }}>
