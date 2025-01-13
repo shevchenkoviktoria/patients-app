@@ -1,70 +1,107 @@
-# Getting Started with Create React App
+# Patient Management Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a full-stack Patient Management Application developed using React (frontend) and Node.js with Express and MySQL (backend). It allows users to manage patient records including adding, editing, deleting, and viewing patient details.
 
-## Available Scripts
+## Technologies Used
 
-In the project directory, you can run:
+- **Frontend:** React, TypeScript, Material UI
+- **Backend:** Node.js, Express.js, Axios, MySQL
+- **Database:** SQLite
+- **Testing:** Jest, React Testing Library
+- **Tools:** Docker, Postman (for API testing)
 
-### `npm start`
+## Project Structure
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Frontend
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- `components`: Reusable UI components.
+- `services`: Axios services for API interaction.
+- `types`: TypeScript interfaces.
+- `tests`: Automated test cases using Jest.
 
-### `npm test`
+### Backend
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- `index.js`: Main server entry point.
+- `controllers`: Logic for handling CRUD operations.
+- `routes`: API route definitions.
+- `database`: SQLite database configuration.
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Setup and Installation
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Prerequisites
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Ensure you have the following installed:
 
-### `npm run eject`
+- Node.js (v18+)
+- SQLite3
+- npm (v9+)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+---
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Setup
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+1. `Git clone`
+2. Install dependencies: `npm install`
+3. `npm start`
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+The app will be available at `http://localhost:3000`.
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Backend Setup
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+1. Navigate to the backend directory:
+   `cd patients-backend`
 
-### Code Splitting
+2. Install dependencies:
+   `npm install`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+3. Create a `.env` file and configure the database path and server port:
 
-### Analyzing the Bundle Size
+`PORT=5000`
+`DB_PATH=./patients.db`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+4. Start the backend server: `node server.js`
 
-### Making a Progressive Web App
+5. The backend server will run at `http://localhost:5000`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+---
 
-### Advanced Configuration
+### Database Setup
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+The backend uses SQLite as a lightweight database. If the database file (patients.db) does not exist, it will be created automatically. To manually create the database, use the following schema:
 
-### Deployment
+CREATE TABLE patients (
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+name TEXT NOT NULL,
+dob TEXT NOT NULL,
+condition TEXT NOT NULL,
+appointment_date TEXT NOT NULL
+);
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+CREATE TABLE appointments (
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+patient_id INTEGER,
+appointment_date TEXT NOT NULL,
+details TEXT,
+FOREIGN KEY(patient_id) REFERENCES patients(id)
+);
+#### Open http://localhost:3000 in your browser
 
-### `npm run build` fails to minify
+### API Endpoints
+Patients:
+`GET /api/patients` - Fetch all patients.
+`GET /api/patients/:id` - Fetch a specific patient by ID.
+`POST /api/patients` - Add a new patient.
+`PUT /api/patients/:id` - Update a patient by ID.
+`DELETE /api/patients/:id` - Delete a patient by ID.
+Appointments:
+`GET /api/appointments` - Fetch all appointments.
+`POST /api/appointments` - Create a new appointment.
+`DELETE /api/appointments/:id` - Delete an appointment by ID.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Testing 
+
+Run `npm test`
