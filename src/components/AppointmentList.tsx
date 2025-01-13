@@ -1,25 +1,58 @@
 import React from 'react'
-import { Box, Typography, List, ListItem, ListItemText } from '@mui/material'
+import {
+  Box,
+  IconButton,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from '@mui/material'
 import { Patients } from '../types/Patients'
 
 type AppointmentListProps = {
   patients: Patients[]
+  onDeletePatient: (id: string) => void
 }
 
-const AppointmentList: React.FC<AppointmentListProps> = ({ patients }) => {
+const AppointmentList: React.FC<AppointmentListProps> = ({
+  patients,
+  onDeletePatient,
+}) => {
   return (
-    <Box>
-      <Typography variant="h6">Upcoming Appointments</Typography>
-      <List>
+    <Box sx={{ maxWidth: 600, marginTop: 3 }}>
+      <TableHead>
+        <TableRow>
+          <TableCell>Name</TableCell>
+          <TableCell>Appointment Date</TableCell>
+          <TableCell>Actions</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
         {patients.map((patient) => (
-          <ListItem key={patient.id}>
-            <ListItemText
-              primary={`Patient: ${patient.name}`}
-              secondary={`Next Appointment: ${patient.appointmentDate}`}
-            />
-          </ListItem>
+          <TableRow key={patient.id}>
+            <TableCell>{patient.name}</TableCell>
+
+            <TableCell>
+              {patient.appointmentDate
+                ? patient.appointmentDate
+                : 'No appointment scheduled'}
+            </TableCell>
+
+            <TableCell>
+              {onDeletePatient && (
+                <IconButton
+                  sx={{ fontSize: 12, color: 'red' }}
+                  size="small"
+                  color="primary"
+                  onClick={() => onDeletePatient(patient.id)}
+                >
+                  Archive Appointment
+                </IconButton>
+              )}
+            </TableCell>
+          </TableRow>
         ))}
-      </List>
+      </TableBody>
     </Box>
   )
 }

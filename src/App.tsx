@@ -4,18 +4,19 @@ import axios from 'axios'
 import AddPatient from './components/AddPatient'
 import PatientList from './components/PatientList'
 import AppointmentList from './components/AppointmentList'
+import { Patients } from './types/Patients'
 
 const App: React.FC = () => {
   const [tabIndex, setTabIndex] = useState(0)
-  const [patients, setPatients] = useState<any[]>([])
-  const [appointments, setAppointments] = useState<any[]>([])
+  const [patients, setPatients] = useState<Patients[]>([])
+  const [, setAppointments] = useState<any[]>([])
 
   const fetchPatients = () => {
     axios
       .get('http://localhost:5000/api/patients')
       .then((response) => {
         setPatients(response.data)
-        const appointmentData = response.data.map((patient: any) => ({
+        const appointmentData = response.data.map((patient: Patients) => ({
           name: patient.name,
           nextAppointment: patient.appointmentDate,
         }))
@@ -28,12 +29,20 @@ const App: React.FC = () => {
     fetchPatients()
   }, [])
 
-  const handleAddPatient = (newPatient: any) => {
+  const handleAddPatient = (newPatient: Patients) => {
     setPatients((prevPatients) => [...prevPatients, newPatient])
     setAppointments((prevAppointments) => [
       ...prevAppointments,
       { name: newPatient.name, nextAppointment: newPatient.appointmentDate },
     ])
+  }
+
+  const handleUpdatePatient = (updatedPatient: Patients) => {
+    setPatients((prevPatients) =>
+      prevPatients.map((patient) =>
+        patient.id === updatedPatient.id ? updatedPatient : patient
+      )
+    )
   }
 
   const handleDeletePatient = (patientId: string) => {
@@ -45,11 +54,10 @@ const App: React.FC = () => {
         )
       })
       .catch((error) => console.error('Error deleting patient', error))
-    window.location.reload() //better to use useQuery
   }
 
   const handleTabChange = (
-    event: React.SyntheticEvent,
+    _event: React.SyntheticEvent,
     newTabIndex: number
   ) => {
     setTabIndex(newTabIndex)
@@ -65,43 +73,12 @@ const App: React.FC = () => {
           centered
           indicatorColor="primary"
           textColor="primary"
-          sx={{
-            transition: 'transform 0.3s ease',
-            boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
-          }}
         >
-          <Tab
-            label="Add New Patient"
-            sx={{
-              fontWeight: tabIndex === 0 ? 'bold' : 'normal',
-              color: tabIndex === 0 ? 'primary.main' : 'text.primary',
-              textTransform: 'none',
-            }}
-          />
-          <Tab
-            label="Patients"
-            sx={{
-              fontWeight: tabIndex === 1 ? 'bold' : 'normal',
-              color: tabIndex === 1 ? 'primary.main' : 'text.primary',
-              textTransform: 'none',
-            }}
-          />
-          <Tab
-            label="Appointments"
-            sx={{
-              fontWeight: tabIndex === 2 ? 'bold' : 'normal',
-              color: tabIndex === 2 ? 'primary.main' : 'text.primary',
-              textTransform: 'none',
-            }}
-          />
-          <Tab
-            label="Settings"
-            sx={{
-              fontWeight: tabIndex === 3 ? 'bold' : 'normal',
-              color: tabIndex === 3 ? 'primary.main' : 'text.primary',
-              textTransform: 'none',
-            }}
-          />
+          <Tab label="Add New Patient" />
+          <Tab label="Patients" />
+          <Tab label="Appointments" />
+          <Tab label="Reports" />
+          <Tab label="Settings" />
         </Tabs>
       </AppBar>
 
@@ -130,15 +107,30 @@ const App: React.FC = () => {
               <PatientList
                 patients={patients}
                 onDeletePatient={handleDeletePatient}
+                onUpdatePatient={handleUpdatePatient}
               />
             </Box>
           )}
+
           {tabIndex === 2 && (
             <Box>
-              <AppointmentList patients={patients} />
+              <Typography variant="h5" gutterBottom>
+                Appointments
+              </Typography>
+              <AppointmentList
+                patients={patients}
+                onDeletePatient={handleDeletePatient}
+              />
             </Box>
           )}
           {tabIndex === 3 && (
+            <Box>
+              <Typography variant="h5" gutterBottom>
+                Reports
+              </Typography>
+            </Box>
+          )}
+          {tabIndex === 4 && (
             <Box>
               <Typography variant="h5" gutterBottom>
                 Settings

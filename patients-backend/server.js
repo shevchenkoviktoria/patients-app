@@ -34,11 +34,29 @@ app.get('/api/patients', (req, res) => {
   })
 })
 
+// Get patient by ID
+app.get('/api/patients/:id', (req, res) => {
+  const { id } = req.params
+  const query = 'SELECT * FROM patients WHERE id = ?'
+
+  db.get(query, [id], (err, row) => {
+    if (err) {
+      console.error('Error fetching patient:', err.message)
+      return res.status(500).json({ error: 'Error fetching patient' })
+    }
+
+    if (!row) {
+      return res.status(404).json({ error: 'Patient not found' })
+    }
+
+    res.json(row)
+  })
+})
+
 // Add a new patient
 app.post('/api/patients', (req, res) => {
   const { name, dob, condition, appointmentDate } = req.body
 
-  // Validate input
   if (!name || !dob || !condition || !appointmentDate) {
     return res.status(400).json({ error: 'Missing required fields' })
   }
@@ -78,6 +96,32 @@ app.delete('/api/patients/:id', (req, res) => {
   })
 })
 
+// Update patient
+app.put('/api/patients/:id', (req, res) => {
+  const { id } = req.params
+  const { name, dob, condition, appointmentDate } = req.body
+
+  if (!name || !dob || !condition || !appointmentDate) {
+    return res.status(400).json({ error: 'Missing required fields' })
+  }
+
+  const query =
+    'UPDATE patients SET name = ?, dob = ?, condition = ?, appointment_date = ? WHERE id = ?'
+  db.run(query, [name, dob, condition, appointmentDate, id], function (err) {
+    if (err) {
+      console.error('Error updating patient:', err.message)
+      return res.status(500).json({ error: 'Error updating patient' })
+    }
+    if (this.changes === 0) {
+      return res.status(404).json({ error: 'Patient not found' })
+    }
+    res.status(200).json({
+      message: 'Patient updated successfully',
+      patient: { id, name, dob, condition, appointmentDate },
+    })
+  })
+})
+
 // Appointment Routes
 
 // Get all appointments
@@ -91,7 +135,7 @@ app.get('/api/appointments', (req, res) => {
   })
 })
 
-// Add a new appointment
+// Add new appointment
 app.post('/api/appointments', (req, res) => {
   const { patientId, appointmentDate, details } = req.body
 
@@ -134,7 +178,7 @@ app.delete('/api/appointments/:id', (req, res) => {
   })
 })
 
-// Listen on the specified port
+
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`)
 })

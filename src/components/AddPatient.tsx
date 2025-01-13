@@ -4,7 +4,7 @@ import axios from 'axios'
 import { Patients } from '../types/Patients'
 
 type AddPatientProps = {
-  onAddPatient: (newPatient: Patients[]) => void
+  onAddPatient: (newPatient: Patients) => void
 }
 
 const AddPatient: React.FC<AddPatientProps> = ({ onAddPatient }) => {
