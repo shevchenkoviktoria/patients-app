@@ -6,7 +6,9 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  Tooltip,
 } from '@mui/material'
+import CancelIcon from '@mui/icons-material/Cancel'
 import { Appoitment } from '../types/Appoitment'
 
 type AppointmentListProps = {
@@ -19,7 +21,7 @@ const AppointmentList: React.FC<AppointmentListProps> = ({
   onDeletePatient,
 }) => {
   return (
-    <Box sx={{ maxWidth: 600, marginTop: 3 }}>
+    <Box sx={{ marginTop: 3 }}>
       <TableHead>
         <TableRow>
           <TableCell>Name</TableCell>
@@ -40,14 +42,16 @@ const AppointmentList: React.FC<AppointmentListProps> = ({
 
             <TableCell>
               {onDeletePatient && (
-                <IconButton
-                  sx={{ fontSize: 12, color: 'red' }}
-                  size="small"
-                  color="primary"
-                  onClick={() => onDeletePatient(patient.id)}
-                >
-                  Archive Appointment
-                </IconButton>
+                <Tooltip title="Cancel Appointment">
+                  <IconButton
+                    sx={{ fontSize: 12, color: 'red' }}
+                    size="small"
+                    color="primary"
+                    onClick={() => onDeletePatient(patient.id)}
+                  >
+                    <CancelIcon />
+                  </IconButton>
+                </Tooltip>
               )}
             </TableCell>
           </TableRow>

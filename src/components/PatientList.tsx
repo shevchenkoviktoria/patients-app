@@ -8,7 +8,10 @@ import {
   TableHead,
   TableRow,
   TextField,
+  Tooltip,
 } from '@mui/material'
+import DeleteIcon from '@mui/icons-material/Delete'
+import EditIcon from '@mui/icons-material/Edit'
 import { Patients } from '../types/Patients'
 import EditModal from './EditModal'
 
@@ -76,22 +79,26 @@ const PatientList: React.FC<PatientListProps> = ({
                 <TableCell>{patient.condition}</TableCell>
                 <TableCell>{patient.appointmentDate}</TableCell>
                 <TableCell>
-                  <IconButton
-                    sx={{ fontSize: 12 }}
-                    size="small"
-                    color="primary"
-                    onClick={() => handleEditClick(patient)}
-                  >
-                    Edit
-                  </IconButton>
-                  <IconButton
-                    sx={{ fontSize: 12, color: 'red' }}
-                    size="small"
-                    color="primary"
-                    onClick={() => handleDelete(patient.id)}
-                  >
-                    Delete
-                  </IconButton>
+                  <Tooltip title="Edit patient information">
+                    <IconButton
+                      sx={{ fontSize: 12 }}
+                      size="small"
+                      color="primary"
+                      onClick={() => handleEditClick(patient)}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Delete patient information">
+                    <IconButton
+                      sx={{ fontSize: 12, color: 'red' }}
+                      size="small"
+                      color="primary"
+                      onClick={() => handleDelete(patient.id)}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </Tooltip>
                 </TableCell>
               </TableRow>
             ))}
