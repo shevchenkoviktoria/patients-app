@@ -1,53 +1,56 @@
-import { render, fireEvent, screen } from '@testing-library/react'
-import AddPatient from '../src/components/AddPatient'
 import React from 'react'
+import { render, screen, fireEvent } from '@testing-library/react'
+import '@testing-library/jest-dom'
+import axios from 'axios'
+import AddPatient from '../src/components/AddPatient'
+
+jest.mock('axios', () => ({
+  ...jest.requireActual('axios'),
+  post: jest.fn(),
+}))
+
+const axiosPostMock = axios.post as jest.Mock
 
 describe('AddPatient Component', () => {
-  it('should allow the user to fill in the form and reset the fields', () => {
+  test('renders the component and submits the form correctly', async () => {
     const mockOnAddPatient = jest.fn()
-
-    const patientData = {
-      name: 'John Doe',
-      dob: '1990-01-01',
-      condition: 'Flu',
-      appointmentDate: '2023-06-01',
-    }
-
     render(<AddPatient onAddPatient={mockOnAddPatient} />)
 
-    // form
-    fireEvent.change(screen.getByLabelText(/name/i), {
-      target: { value: patientData.name },
-    })
-    fireEvent.change(screen.getByLabelText(/date of birth/i), {
-      target: { value: patientData.dob },
-    })
-    fireEvent.change(screen.getByLabelText(/medical condition/i), {
-      target: { value: patientData.condition },
-    })
-    fireEvent.change(screen.getByLabelText(/next appointment/i), {
-      target: { value: patientData.appointmentDate },
+    const nameInput = screen.getByLabelText(/Name/i)
+    const dobInput = screen.getByLabelText(/Date of Birth/i)
+    const conditionInput = screen.getByLabelText(/Medical Condition/i)
+    const appointmentDateInput = screen.getByLabelText(/Next Appointment/i)
+    const submitButton = screen.getByText(/Add Patient/i)
+
+    fireEvent.change(nameInput, { target: { value: 'John Doe' } })
+    fireEvent.change(dobInput, { target: { value: '1990-01-01' } })
+    fireEvent.change(conditionInput, { target: { value: 'Flu' } })
+    fireEvent.change(appointmentDateInput, { target: { value: '2024-05-01' } })
+
+    axiosPostMock({
+      data: {
+        id: '123',
+        name: 'John Doe',
+        dob: '1990-01-01',
+        condition: 'Flu',
+        appointmentDate: '2024-05-01',
+      },
     })
 
-    fireEvent.click(screen.getByRole('button', { name: /add patient/i }))
+    fireEvent.click(submitButton)
 
-    expect(mockOnAddPatient).toHaveBeenCalledWith({
-      name: patientData.name,
-      dob: patientData.dob,
-      condition: patientData.condition,
-      appointmentDate: patientData.appointmentDate,
-      id: '',
-    })
+    expect(axios.post).toHaveBeenCalledWith(
+      'http://localhost:5000/api/patients',
+      expect.objectContaining({
+        name: 'John Doe',
+        dob: '1990-01-01',
+        condition: 'Flu',
+        appointmentDate: '2024-05-01',
+      })
+    )
 
-    expect((screen.getByLabelText(/name/i) as HTMLInputElement).value).toBe('')
-    expect(
-      (screen.getByLabelText(/date of birth/i) as HTMLInputElement).value
-    ).toBe('')
-    expect(
-      (screen.getByLabelText(/medical condition/i) as HTMLInputElement).value
-    ).toBe('')
-    expect(
-      (screen.getByLabelText(/next appointment/i) as HTMLInputElement).value
-    ).toBe('')
+    await screen.findByText('Patient added successfully')
+
+    expect(mockOnAddPatient).toHaveBeenCalledTimes(1)
   })
 })
