@@ -108,7 +108,7 @@ const App: React.FC = () => {
         sx={{
           padding: 3,
           transition: 'opacity 0.5s ease',
-          opacity: tabIndex !== null ? 1 : 0, // Smooth fade in/out effect
+          opacity: tabIndex !== null ? 1 : 0,
         }}
       >
         <Container>
@@ -134,7 +134,7 @@ const App: React.FC = () => {
           )}
           {tabIndex === 2 && (
             <Box>
-              <AppointmentList appointments={appointments} />
+              <AppointmentList patients={patients} />
             </Box>
           )}
           {tabIndex === 3 && (

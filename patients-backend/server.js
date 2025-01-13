@@ -78,6 +78,63 @@ app.delete('/api/patients/:id', (req, res) => {
   })
 })
 
+// Appointment Routes
+
+// Get all appointments
+app.get('/api/appointments', (req, res) => {
+  db.all('SELECT * FROM appointments', [], (err, rows) => {
+    if (err) {
+      console.error('Error fetching appointments:', err.message)
+      return res.status(500).json({ error: 'Error fetching appointments' })
+    }
+    res.json(rows)
+  })
+})
+
+// Add a new appointment
+app.post('/api/appointments', (req, res) => {
+  const { patientId, appointmentDate, details } = req.body
+
+  // Validate input
+  if (!patientId || !appointmentDate || !details) {
+    return res.status(400).json({ error: 'Missing required fields' })
+  }
+
+  const query =
+    'INSERT INTO appointments (patient_id, appointment_date, details) VALUES (?, ?, ?)'
+
+  db.run(query, [patientId, appointmentDate, details], function (err) {
+    if (err) {
+      console.error('Error adding appointment:', err.message)
+      return res.status(500).json({ error: 'Error adding appointment' })
+    }
+    res.status(201).json({
+      id: this.lastID,
+      patientId,
+      appointmentDate,
+      details,
+    })
+  })
+})
+
+// Delete appointment
+app.delete('/api/appointments/:id', (req, res) => {
+  const { id } = req.params
+  const query = 'DELETE FROM appointments WHERE id = ?'
+
+  db.run(query, [id], function (err) {
+    if (err) {
+      console.error('Error deleting appointment:', err.message)
+      return res.status(500).json({ error: 'Error deleting appointment' })
+    }
+    if (this.changes === 0) {
+      return res.status(404).json({ error: 'Appointment not found' })
+    }
+    res.status(200).json({ message: 'Appointment deleted successfully' })
+  })
+})
+
+// Listen on the specified port
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`)
 })

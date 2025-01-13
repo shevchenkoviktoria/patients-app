@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import { TextField, Button, Box, Stack } from '@mui/material'
 import axios from 'axios'
+import { Patients } from '../types/Patients'
+
 
 type AddPatientProps = {
-  onAddPatient: (newPatient: any) => void
+  onAddPatient: (newPatient: Patients[]) => void
 }
 
 const AddPatient: React.FC<AddPatientProps> = ({ onAddPatient }) => {
@@ -14,25 +16,31 @@ const AddPatient: React.FC<AddPatientProps> = ({ onAddPatient }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    const newPatient = { name, dob, condition, appointmentDate }
+
+    // Create new patient object
+    const newPatient: Patients = {
+      name,
+      dob,
+      condition,
+      appointmentDate,
+      id: '',
+    }
 
     try {
-      // Make a POST request to add the new patient
       const response = await axios.post(
         'http://localhost:5000/api/patients',
         newPatient
       )
 
-      // Call the parent onAddPatient callback to update the state in App.tsx
+      // Use onAddPatient with the returned patient data from API response
       onAddPatient(response.data)
 
-      // Reset form fields
+      // Clear form after submitting
       setName('')
       setDob('')
       setCondition('')
       setAppointmentDate('')
 
-      // Alert the user that the patient was added
       alert('Patient added successfully')
     } catch (error) {
       console.error('Error adding patient', error)
@@ -98,7 +106,6 @@ const AddPatient: React.FC<AddPatientProps> = ({ onAddPatient }) => {
               variant="outlined"
               color="secondary"
               onClick={() => {
-                // Reset the form if the user clicks cancel
                 setName('')
                 setDob('')
                 setCondition('')

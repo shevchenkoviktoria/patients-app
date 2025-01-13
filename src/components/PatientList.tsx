@@ -9,13 +9,13 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-
   IconButton,
 } from '@mui/material'
 import axios from 'axios'
+import { Patients } from '../types/Patients'
 
 type PatientListProps = {
-  patients: any[]
+  patients: Patients[]
   onDeletePatient: (id: string) => void
 }
 

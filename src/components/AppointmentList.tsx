@@ -1,20 +1,21 @@
 import React from 'react'
 import { Box, Typography, List, ListItem, ListItemText } from '@mui/material'
+import { Patients } from '../types/Patients'
 
 type AppointmentListProps = {
-  appointments: any[]
+  patients: Patients[]
 }
 
-const AppointmentList: React.FC<AppointmentListProps> = ({ appointments }) => {
+const AppointmentList: React.FC<AppointmentListProps> = ({ patients }) => {
   return (
     <Box>
       <Typography variant="h6">Upcoming Appointments</Typography>
       <List>
-        {appointments.map((appointment, index) => (
-          <ListItem key={index}>
+        {patients.map((patient) => (
+          <ListItem key={patient.id}>
             <ListItemText
-              primary={`Patient: ${appointment.name}`}
-              secondary={`Next Appointment: ${appointment.appointmentDate}`}
+              primary={`Patient: ${patient.name}`}
+              secondary={`Next Appointment: ${patient.appointmentDate}`}
             />
           </ListItem>
         ))}
