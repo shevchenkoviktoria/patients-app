@@ -99,7 +99,6 @@ const PatientList: React.FC<PatientListProps> = ({
         </Table>
       </Box>
 
-      {/* Use the shared EditModal component */}
       {selectedPatient && (
         <EditModal
           open={editModalOpen}
