@@ -15,7 +15,7 @@ describe('AddPatient Component', () => {
 
     render(<AddPatient onAddPatient={mockOnAddPatient} />)
 
-    // Simulate filling the form
+    // form
     fireEvent.change(screen.getByLabelText(/name/i), {
       target: { value: patientData.name },
     })
@@ -29,19 +29,16 @@ describe('AddPatient Component', () => {
       target: { value: patientData.appointmentDate },
     })
 
-    // Simulate form submission (without axios, just call the mock function)
     fireEvent.click(screen.getByRole('button', { name: /add patient/i }))
 
-    // Check if mockOnAddPatient is called with the correct data
     expect(mockOnAddPatient).toHaveBeenCalledWith({
       name: patientData.name,
       dob: patientData.dob,
       condition: patientData.condition,
       appointmentDate: patientData.appointmentDate,
-      id: '', // id should be empty since we are not testing axios
+      id: '',
     })
 
-    // Check if the input fields are reset after submission
     expect((screen.getByLabelText(/name/i) as HTMLInputElement).value).toBe('')
     expect(
       (screen.getByLabelText(/date of birth/i) as HTMLInputElement).value
