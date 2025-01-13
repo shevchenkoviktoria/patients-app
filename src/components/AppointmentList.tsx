@@ -7,10 +7,10 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material'
-import { Patients } from '../types/Patients'
+import { Appoitment } from '../types/Appoitment'
 
 type AppointmentListProps = {
-  patients: Patients[]
+  patients: Appoitment[]
   onDeletePatient: (id: string) => void
 }
 

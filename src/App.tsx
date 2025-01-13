@@ -56,6 +56,17 @@ const App: React.FC = () => {
       .catch((error) => console.error('Error deleting patient', error))
   }
 
+  const handleDeleteAppointment = (id: string) => {
+    axios
+      .delete(`http://localhost:5000/api/appointments/${id}`)
+      .then(() => {
+        setAppointments((prevAppointment) =>
+          prevAppointment.filter((appointment) => appointment.id !== id)
+        )
+      })
+      .catch((error) => console.error('Error deleting appointment', error))
+  }
+
   const handleTabChange = (
     _event: React.SyntheticEvent,
     newTabIndex: number
@@ -119,7 +130,7 @@ const App: React.FC = () => {
               </Typography>
               <AppointmentList
                 patients={patients}
-                onDeletePatient={handleDeletePatient}
+                onDeletePatient={handleDeleteAppointment}
               />
             </Box>
           )}

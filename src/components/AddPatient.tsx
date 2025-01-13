@@ -99,7 +99,7 @@ const AddPatient: React.FC<AddPatientProps> = ({ onAddPatient }) => {
             }}
           />
           <Stack direction="row" spacing={2}>
-            <Button type="submit" variant="outlined" color="primary">
+            <Button type="submit" variant="contained" color="primary">
               Add Patient
             </Button>
             <Button
