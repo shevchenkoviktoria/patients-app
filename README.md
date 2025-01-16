@@ -116,4 +116,7 @@ Appointments:
 
 ### Testing 
 
-Run `npm test`
+Run `npm test -- --watchAll`
+
+<img width="730" alt="image" src="https://github.com/user-attachments/assets/7c1d7d98-ee55-44fa-8391-19b20553665b" />
+
