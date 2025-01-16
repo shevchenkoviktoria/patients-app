@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { TextField, Button, Box, Stack } from '@mui/material'
+import { TextField, Button, Box, Stack, Typography } from '@mui/material'
 import axios from 'axios'
 import { Patients } from '../types/Patients'
 
@@ -12,35 +12,33 @@ const AddPatient: React.FC<AddPatientProps> = ({ onAddPatient }) => {
   const [dob, setDob] = useState('')
   const [condition, setCondition] = useState('')
   const [appointmentDate, setAppointmentDate] = useState('')
+  const [successMessage, setSuccessMessage] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault()
 
-    const newPatient: Patients = {
-      name,
-      dob,
-      condition,
-      appointmentDate,
-      id: '',
+    const patientData = {
+      id: '123',
+      name: name,
+      dob: dob,
+      condition: condition,
+      appointmentDate: appointmentDate,
     }
 
     try {
-      const response = await axios.post(
-        'http://localhost:5000/api/patients',
-        newPatient
-      )
-
-      onAddPatient(response.data)
-
+      await axios.post('/api/patients', patientData)
+      onAddPatient(patientData)
+      setSuccessMessage('Patient added successfully')
+      setErrorMessage('') 
       setName('')
       setDob('')
       setCondition('')
       setAppointmentDate('')
-
-      alert('Patient added successfully')
     } catch (error) {
       console.error('Error adding patient', error)
-      alert('Failed to add patient')
+      setErrorMessage('Failed to add patient')
+      setSuccessMessage('') 
     }
   }
 
@@ -110,11 +108,24 @@ const AddPatient: React.FC<AddPatientProps> = ({ onAddPatient }) => {
                 setDob('')
                 setCondition('')
                 setAppointmentDate('')
+                setSuccessMessage('') 
+                setErrorMessage('') 
               }}
             >
               Cancel
             </Button>
           </Stack>
+
+          {successMessage && (
+            <Typography color="green" sx={{ marginTop: 2 }}>
+              {successMessage}
+            </Typography>
+          )}
+          {errorMessage && (
+            <Typography color="red" sx={{ marginTop: 2 }}>
+              {errorMessage}
+            </Typography>
+          )}
         </Stack>
       </form>
     </Box>

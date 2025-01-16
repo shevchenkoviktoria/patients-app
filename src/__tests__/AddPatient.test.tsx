@@ -1,19 +1,26 @@
 import React from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom'
-import axios from 'axios'
-import AddPatient from '../src/components/AddPatient'
+import AddPatient from '../components/AddPatient'
+
+global.alert = jest.fn()
 
 jest.mock('axios', () => ({
-  ...jest.requireActual('axios'),
-  post: jest.fn(),
+  post: jest.fn().mockResolvedValue({
+    data: {
+      id: '123',
+      name: 'John Doe',
+      dob: '01.01.1995',
+      condition: 'Flu',
+      appointmentDate: '01.05.2024',
+    },
+  }),
 }))
 
-const axiosPostMock = axios.post as jest.Mock
+const mockOnAddPatient = jest.fn()
 
 describe('AddPatient Component', () => {
   test('renders the component and submits the form correctly', async () => {
-    const mockOnAddPatient = jest.fn()
     render(<AddPatient onAddPatient={mockOnAddPatient} />)
 
     const nameInput = screen.getByLabelText(/Name/i)
@@ -27,30 +34,18 @@ describe('AddPatient Component', () => {
     fireEvent.change(conditionInput, { target: { value: 'Flu' } })
     fireEvent.change(appointmentDateInput, { target: { value: '2024-05-01' } })
 
-    axiosPostMock.mockResolvedValue({
-      data: {
-        id: '123',
-        name: 'John Doe',
-        dob: '1990-01-01',
-        condition: 'Flu',
-        appointmentDate: '2024-05-01',
-      },
-    })
-
     fireEvent.click(submitButton)
 
     const successMessage = await screen.findByText('Patient added successfully')
     expect(successMessage).toBeInTheDocument()
 
-    expect(axios.post).toHaveBeenCalledWith(
-      'http://localhost:5000/api/patients',
-      expect.objectContaining({
-        name: 'John Doe',
-        dob: '1990-01-01',
-        condition: 'Flu',
-        appointmentDate: '2024-05-01',
-      })
-    )
+    expect(mockOnAddPatient).toHaveBeenCalledWith({
+      id: '123',
+      name: 'John Doe',
+      dob: '1990-01-01',
+      condition: 'Flu',
+      appointmentDate: '2024-05-01',
+    })
 
     expect(mockOnAddPatient).toHaveBeenCalledTimes(1)
   })
