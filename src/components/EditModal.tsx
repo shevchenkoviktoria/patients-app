@@ -5,7 +5,7 @@ type EditModalProps = {
   open: boolean
   onClose: () => void
   onSave: (updatedPatient: any) => void
-  patient: any // You can define a proper type here if available
+  patient: any
 }
 
 const EditModal: React.FC<EditModalProps> = ({

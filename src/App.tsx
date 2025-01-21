@@ -1,32 +1,37 @@
 import React, { useState, useEffect } from 'react'
 import { AppBar, Tabs, Tab, Box, Container, Typography } from '@mui/material'
-import axios from 'axios'
 import AddPatient from './components/AddPatient'
 import PatientList from './components/PatientList'
 import AppointmentList from './components/AppointmentList'
 import { Patients } from './types/Patients'
+import {
+  deleteAppointment,
+  deletePatient,
+  fetchPatients,
+} from './api/patientApi'
+import { handleError } from './utils/errorHandler'
 
 const App: React.FC = () => {
   const [tabIndex, setTabIndex] = useState(0)
   const [patients, setPatients] = useState<Patients[]>([])
-  const [, setAppointments] = useState<any[]>([])
+  const [appointments, setAppointments] = useState<any[]>([])
 
-  const fetchPatients = () => {
-    axios
-      .get('http://localhost:5000/api/patients')
-      .then((response) => {
-        setPatients(response.data)
-        const appointmentData = response.data.map((patient: Patients) => ({
+  useEffect(() => {
+    const loadPatients = async () => {
+      try {
+        const fetchedPatients = await fetchPatients()
+        setPatients(fetchedPatients)
+
+        const appointmentData = fetchedPatients.map((patient) => ({
           name: patient.name,
           nextAppointment: patient.appointmentDate,
         }))
         setAppointments(appointmentData)
-      })
-      .catch((error) => console.error('Error fetching patients', error))
-  }
-
-  useEffect(() => {
-    fetchPatients()
+      } catch (error) {
+        console.error('Error loading patients', error)
+      }
+    }
+    loadPatients()
   }, [])
 
   const handleAddPatient = (newPatient: Patients) => {
@@ -45,26 +50,28 @@ const App: React.FC = () => {
     )
   }
 
-  const handleDeletePatient = (patientId: string) => {
-    axios
-      .delete(`http://localhost:5000/api/patients/${patientId}`)
-      .then(() => {
-        setPatients((prevPatients) =>
-          prevPatients.filter((patient) => patient.id !== patientId)
-        )
-      })
-      .catch((error) => console.error('Error deleting patient', error))
+  const handleDeletePatient = async (patientId: string) => {
+    try {
+      await deletePatient(patientId)
+      setPatients((prevPatients) =>
+        prevPatients.filter((patient) => patient.id !== patientId)
+      )
+    } catch (error) {
+      console.error('Error deleting patient', error)
+    }
   }
 
-  const handleDeleteAppointment = (id: string) => {
-    axios
-      .delete(`http://localhost:5000/api/appointments/${id}`)
-      .then(() => {
-        setAppointments((prevAppointment) =>
-          prevAppointment.filter((appointment) => appointment.id !== id)
+  const handleDeleteAppointment = async (appointmentId: string) => {
+    try {
+      await deleteAppointment(appointmentId)
+      setAppointments((prevAppointments) =>
+        prevAppointments.filter(
+          (appointment) => appointment.id !== appointmentId
         )
-      })
-      .catch((error) => console.error('Error deleting appointment', error))
+      )
+    } catch (error) {
+      handleError('Error deleting appointment', error)
+    }
   }
 
   const handleTabChange = (
@@ -129,8 +136,8 @@ const App: React.FC = () => {
                 Appointments
               </Typography>
               <AppointmentList
-                patients={patients}
-                onDeletePatient={handleDeleteAppointment}
+                appointments={appointments}
+                onDeleteAppointment={handleDeleteAppointment}
               />
             </Box>
           )}

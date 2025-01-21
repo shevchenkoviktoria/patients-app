@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { TextField, Button, Box, Stack, Typography } from '@mui/material'
 import axios from 'axios'
 import { Patients } from '../types/Patients'
+import { handleError } from '../utils/errorHandler'
 
 type AddPatientProps = {
   onAddPatient: (newPatient: Patients) => void
@@ -30,15 +31,15 @@ const AddPatient: React.FC<AddPatientProps> = ({ onAddPatient }) => {
       await axios.post('/api/patients', patientData)
       onAddPatient(patientData)
       setSuccessMessage('Patient added successfully')
-      setErrorMessage('') 
+      setErrorMessage('')
       setName('')
       setDob('')
       setCondition('')
       setAppointmentDate('')
     } catch (error) {
-      console.error('Error adding patient', error)
+      handleError('Error adding patient', error)
       setErrorMessage('Failed to add patient')
-      setSuccessMessage('') 
+      setSuccessMessage('')
     }
   }
 
@@ -108,8 +109,8 @@ const AddPatient: React.FC<AddPatientProps> = ({ onAddPatient }) => {
                 setDob('')
                 setCondition('')
                 setAppointmentDate('')
-                setSuccessMessage('') 
-                setErrorMessage('') 
+                setSuccessMessage('')
+                setErrorMessage('')
               }}
             >
               Cancel
