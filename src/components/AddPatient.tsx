@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { TextField, Button, Box, Stack, Typography } from '@mui/material'
-import axios from 'axios'
 import { Patients } from '../types/Patients'
 import { handleError } from '../utils/errorHandler'
+import { addPatient } from '../api/patientApi'
 
 type AddPatientProps = {
   onAddPatient: (newPatient: Patients) => void
@@ -20,7 +20,6 @@ const AddPatient: React.FC<AddPatientProps> = ({ onAddPatient }) => {
     e.preventDefault()
 
     const patientData = {
-      id: '123',
       name: name,
       dob: dob,
       condition: condition,
@@ -28,8 +27,8 @@ const AddPatient: React.FC<AddPatientProps> = ({ onAddPatient }) => {
     }
 
     try {
-      await axios.post('/api/patients', patientData)
-      onAddPatient(patientData)
+      const newPatient = await addPatient(patientData)
+      onAddPatient(newPatient) 
       setSuccessMessage('Patient added successfully')
       setErrorMessage('')
       setName('')

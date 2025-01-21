@@ -4,6 +4,7 @@ import { handleError } from '../utils/errorHandler'
 
 export const apiUrl = 'http://localhost:5000/api'
 
+// Fetch all patients
 export const fetchPatients = async (): Promise<Patients[]> => {
   try {
     const response = await axios.get(`${apiUrl}/patients`)
@@ -14,6 +15,20 @@ export const fetchPatients = async (): Promise<Patients[]> => {
   }
 }
 
+// Add a new patient
+export const addPatient = async (
+  patientData: Omit<Patients, 'id'>
+): Promise<Patients> => {
+  try {
+    const response = await axios.post(`${apiUrl}/patients`, patientData)
+    return response.data 
+  } catch (error) {
+    handleError('Error adding patient', error)
+    throw error
+  }
+}
+
+// Delete a patient
 export const deletePatient = async (patientId: string): Promise<void> => {
   try {
     await axios.delete(`${apiUrl}/patients/${patientId}`)
@@ -23,6 +38,7 @@ export const deletePatient = async (patientId: string): Promise<void> => {
   }
 }
 
+// Delete an appointment
 export const deleteAppointment = async (
   appointmentId: string
 ): Promise<void> => {
