@@ -28,7 +28,7 @@ const App: React.FC = () => {
         }))
         setAppointments(appointmentData)
       } catch (error) {
-        console.error('Error loading patients', error)
+        handleError('Error loading patients', error)
       }
     }
     loadPatients()
@@ -57,7 +57,7 @@ const App: React.FC = () => {
         prevPatients.filter((patient) => patient.id !== patientId)
       )
     } catch (error) {
-      console.error('Error deleting patient', error)
+      handleError('Error deleting patient', error)
     }
   }
 
