@@ -136,8 +136,8 @@ const App: React.FC = () => {
                 Appointments
               </Typography>
               <AppointmentList
-                appointments={appointments}
-                onDeleteAppointment={handleDeleteAppointment}
+                patients={patients}
+                onDeletePatient={handleDeleteAppointment}
               />
             </Box>
           )}

@@ -12,13 +12,13 @@ import CancelIcon from '@mui/icons-material/Cancel'
 import { Appoitment } from '../types/Appoitment'
 
 type AppointmentListProps = {
-  appointments: Appoitment[]
-  onDeleteAppointment: (id: string) => void
+  patients: Appoitment[]
+  onDeletePatient: (id: string) => void
 }
 
 const AppointmentList: React.FC<AppointmentListProps> = ({
-  appointments,
-  onDeleteAppointment,
+  patients,
+  onDeletePatient,
 }) => {
   return (
     <Box sx={{ marginTop: 3 }}>
@@ -30,24 +30,24 @@ const AppointmentList: React.FC<AppointmentListProps> = ({
         </TableRow>
       </TableHead>
       <TableBody>
-        {appointments.map((appointment) => (
-          <TableRow key={appointment.id}>
-            <TableCell>{appointment.name}</TableCell>
+        {patients.map((patient) => (
+          <TableRow key={patient.id}>
+            <TableCell>{patient.name}</TableCell>
 
             <TableCell>
-              {appointment.appointmentDate
-                ? appointment.appointmentDate
+              {patient.appointmentDate
+                ? patient.appointmentDate
                 : 'No appointment scheduled'}
             </TableCell>
 
             <TableCell>
-              {onDeleteAppointment && (
+              {onDeletePatient && (
                 <Tooltip title="Cancel Appointment">
                   <IconButton
                     sx={{ fontSize: 12, color: 'red' }}
                     size="small"
                     color="primary"
-                    onClick={() => onDeleteAppointment(appointment.id)}
+                    onClick={() => onDeletePatient(patient.id)}
                   >
                     <CancelIcon />
                   </IconButton>
