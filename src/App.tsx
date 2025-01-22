@@ -78,7 +78,7 @@ const App: React.FC = () => {
           <Tab label="Add New Patient" />
           <Tab label="Patients" />
           <Tab label="Appointments" />
-          <Tab label="Reports" />
+          <Tab label="Medical History" />
           <Tab label="Settings" />
         </Tabs>
       </AppBar>
