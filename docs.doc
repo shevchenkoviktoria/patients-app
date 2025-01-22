@@ -87,5 +87,11 @@ Use of useQuery: To simplify data fetching and improve performance, useQuery (fr
 Patient and Appointment Management API: Backend API endpoints should be improved to support the retrieval of patient and appointment IDs for editing and canceling appointments. This would enable better data handling and more efficient updates.
 Supporting multiple languages can be crucial for global applications, especially in patient management systems where users may speak different languages. By translating both system messages (e.g., success and error messages) and UI components, can be ensured a better user experience for a diverse set of users.
 Form validation
+Securing patient data (General Data Protection Regulation). Validate all user inputs to prevent SQL Injection or NoSQL Injection attacks by using libraries like Mongoose, implement strong authentication mechanisms using OAuth 2.0, JWT (JSON Web Tokens), or session-based authentication and allow two-factor
+authentication.
+Global error handler or notification system instead of component-level error messages
+Confirmation dialog before deletion to avoid user mistakes.
+Debouncing search input for performant with a large dataset.
+Components should support lazy loading for improved performance with large datasets
 Conclusion:
 This Patient Management System allows healthcare professionals to effectively manage patient records and appointments. The modern design with Material UI components ensures a clean, user-friendly interface, while the integration with backend APIs makes it scalable and capable of handling real-world healthcare data.
