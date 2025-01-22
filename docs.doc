@@ -86,6 +86,6 @@ Improvements and Enhancements:
 Use of useQuery: To simplify data fetching and improve performance, useQuery (from React Query) can be integrated for fetching patient and appointment data, replacing manual useEffect hooks and ensuring better caching and synchronization with the server.
 Patient and Appointment Management API: Backend API endpoints should be improved to support the retrieval of patient and appointment IDs for editing and canceling appointments. This would enable better data handling and more efficient updates.
 Supporting multiple languages can be crucial for global applications, especially in patient management systems where users may speak different languages. By translating both system messages (e.g., success and error messages) and UI components, can be ensured a better user experience for a diverse set of users.
-
+Form validation
 Conclusion:
 This Patient Management System allows healthcare professionals to effectively manage patient records and appointments. The modern design with Material UI components ensures a clean, user-friendly interface, while the integration with backend APIs makes it scalable and capable of handling real-world healthcare data.
