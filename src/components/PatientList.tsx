@@ -34,10 +34,6 @@ const PatientList: React.FC<PatientListProps> = ({
     patient.name.toLowerCase().includes(search.toLowerCase())
   )
 
-  const handleDelete = (id: string) => {
-    onDeletePatient(id)
-  }
-
   const handleEditClick = (patient: Patients) => {
     setSelectedPatient(patient)
     setEditModalOpen(true)
@@ -94,7 +90,7 @@ const PatientList: React.FC<PatientListProps> = ({
                       sx={{ fontSize: 12, color: 'red' }}
                       size="small"
                       color="primary"
-                      onClick={() => handleDelete(patient.id)}
+                      onClick={() => onDeletePatient(patient.id)}
                     >
                       <DeleteIcon />
                     </IconButton>

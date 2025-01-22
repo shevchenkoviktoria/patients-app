@@ -4,17 +4,13 @@ import AddPatient from './components/AddPatient'
 import PatientList from './components/PatientList'
 import AppointmentList from './components/AppointmentList'
 import { Patients } from './types/Patients'
-import {
-  deleteAppointment,
-  deletePatient,
-  fetchPatients,
-} from './api/patientApi'
+import { deletePatient, fetchPatients } from './api/patientApi'
 import { handleError } from './utils/errorHandler'
 
 const App: React.FC = () => {
   const [tabIndex, setTabIndex] = useState(0)
   const [patients, setPatients] = useState<Patients[]>([])
-  const [appointments, setAppointments] = useState<any[]>([])
+  const [, setAppointments] = useState<any[]>([])
 
   useEffect(() => {
     const loadPatients = async () => {
@@ -58,19 +54,6 @@ const App: React.FC = () => {
       )
     } catch (error) {
       handleError('Error deleting patient', error)
-    }
-  }
-
-  const handleDeleteAppointment = async (appointmentId: string) => {
-    try {
-      await deleteAppointment(appointmentId)
-      setAppointments((prevAppointments) =>
-        prevAppointments.filter(
-          (appointment) => appointment.id !== appointmentId
-        )
-      )
-    } catch (error) {
-      handleError('Error deleting appointment', error)
     }
   }
 
@@ -137,7 +120,7 @@ const App: React.FC = () => {
               </Typography>
               <AppointmentList
                 patients={patients}
-                onDeletePatient={handleDeleteAppointment}
+                onDeletePatient={handleDeletePatient}
               />
             </Box>
           )}

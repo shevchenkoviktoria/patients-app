@@ -21,7 +21,7 @@ export const addPatient = async (
 ): Promise<Patients> => {
   try {
     const response = await axios.post(`${apiUrl}/patients`, patientData)
-    return response.data 
+    return response.data
   } catch (error) {
     handleError('Error adding patient', error)
     throw error
@@ -34,18 +34,6 @@ export const deletePatient = async (patientId: string): Promise<void> => {
     await axios.delete(`${apiUrl}/patients/${patientId}`)
   } catch (error) {
     handleError('Error deleting patient', error)
-    throw error
-  }
-}
-
-// Delete an appointment
-export const deleteAppointment = async (
-  appointmentId: string
-): Promise<void> => {
-  try {
-    await axios.delete(`${apiUrl}/appointments/${appointmentId}`)
-  } catch (error) {
-    handleError('Error deleting appointment', error)
     throw error
   }
 }
