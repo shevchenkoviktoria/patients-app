@@ -9,6 +9,11 @@ import {
   TableRow,
   TextField,
   Tooltip,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
 } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
@@ -29,6 +34,8 @@ const PatientList: React.FC<PatientListProps> = ({
   const [search, setSearch] = useState('')
   const [editModalOpen, setEditModalOpen] = useState(false)
   const [selectedPatient, setSelectedPatient] = useState<Patients | null>(null)
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+  const [patientToDelete, setPatientToDelete] = useState<string | null>(null)
 
   const filteredPatients = patients.filter((patient) =>
     patient.name.toLowerCase().includes(search.toLowerCase())
@@ -42,6 +49,24 @@ const PatientList: React.FC<PatientListProps> = ({
   const handleSaveChanges = (updatedPatient: Patients) => {
     onUpdatePatient(updatedPatient)
     setEditModalOpen(false)
+  }
+
+  const handleDeleteClick = (id: string) => {
+    setPatientToDelete(id)
+    setDeleteDialogOpen(true)
+  }
+
+  const handleConfirmDelete = () => {
+    if (patientToDelete) {
+      onDeletePatient(patientToDelete)
+    }
+    setDeleteDialogOpen(false)
+    setPatientToDelete(null)
+  }
+
+  const handleCancelDelete = () => {
+    setDeleteDialogOpen(false)
+    setPatientToDelete(null)
   }
 
   return (
@@ -90,7 +115,7 @@ const PatientList: React.FC<PatientListProps> = ({
                       sx={{ fontSize: 12, color: 'red' }}
                       size="small"
                       color="primary"
-                      onClick={() => onDeletePatient(patient.id)}
+                      onClick={() => handleDeleteClick(patient.id)}
                     >
                       <DeleteIcon />
                     </IconButton>
@@ -110,6 +135,32 @@ const PatientList: React.FC<PatientListProps> = ({
           patient={selectedPatient}
         />
       )}
+
+      <Dialog open={deleteDialogOpen} onClose={handleCancelDelete}>
+        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogContent>
+          Are you sure you want to delete this patient? This action cannot be
+          undone.
+        </DialogContent>
+        <DialogActions>
+          <Button
+            size="small"
+            variant="contained"
+            onClick={handleCancelDelete}
+            color="primary"
+          >
+            Cancel
+          </Button>
+          <Button
+            size="small"
+            variant="contained"
+            onClick={handleConfirmDelete}
+            color="secondary"
+          >
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   )
 }
