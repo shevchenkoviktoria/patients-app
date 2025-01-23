@@ -14,11 +14,13 @@ import {
   DialogContent,
   DialogActions,
   Button,
+  InputAdornment,
 } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import { Patients } from '../types/Patients'
 import EditModal from './EditModal'
+import { SearchRounded } from '@mui/icons-material'
 
 type PatientListProps = {
   patients: Patients[]
@@ -79,6 +81,15 @@ const PatientList: React.FC<PatientListProps> = ({
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           margin="normal"
+          slotProps={{
+            input: {
+              endAdornment: (
+                <InputAdornment position="end">
+                  <SearchRounded />
+                </InputAdornment>
+              ),
+            },
+          }}
         />
       </Box>
       <Box sx={{ marginTop: 3 }}>
@@ -102,9 +113,9 @@ const PatientList: React.FC<PatientListProps> = ({
                 <TableCell>
                   <Tooltip title="Edit patient information">
                     <IconButton
+                      color="primary"
                       sx={{ fontSize: 12 }}
                       size="small"
-                      color="primary"
                       onClick={() => handleEditClick(patient)}
                     >
                       <EditIcon />
@@ -114,7 +125,6 @@ const PatientList: React.FC<PatientListProps> = ({
                     <IconButton
                       sx={{ fontSize: 12, color: 'red' }}
                       size="small"
-                      color="primary"
                       onClick={() => handleDeleteClick(patient.id)}
                     >
                       <DeleteIcon />
@@ -138,7 +148,7 @@ const PatientList: React.FC<PatientListProps> = ({
 
       <Dialog open={deleteDialogOpen} onClose={handleCancelDelete}>
         <DialogTitle>Confirm Deletion</DialogTitle>
-        <DialogContent>
+        <DialogContent color="secondary">
           Are you sure you want to delete this patient? This action cannot be
           undone.
         </DialogContent>
@@ -147,7 +157,7 @@ const PatientList: React.FC<PatientListProps> = ({
             size="small"
             variant="contained"
             onClick={handleCancelDelete}
-            color="primary"
+            color="secondary"
           >
             Cancel
           </Button>
@@ -155,7 +165,7 @@ const PatientList: React.FC<PatientListProps> = ({
             size="small"
             variant="contained"
             onClick={handleConfirmDelete}
-            color="secondary"
+            color="primary"
           >
             Confirm
           </Button>

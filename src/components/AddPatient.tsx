@@ -28,7 +28,7 @@ const AddPatient: React.FC<AddPatientProps> = ({ onAddPatient }) => {
 
     try {
       const newPatient = await addPatient(patientData)
-      onAddPatient(newPatient) 
+      onAddPatient(newPatient)
       setSuccessMessage('Patient added successfully')
       setErrorMessage('')
       setName('')
@@ -97,12 +97,11 @@ const AddPatient: React.FC<AddPatientProps> = ({ onAddPatient }) => {
             }}
           />
           <Stack direction="row" spacing={2}>
-            <Button type="submit" variant="contained" color="primary">
+            <Button type="submit" variant="contained">
               Add Patient
             </Button>
             <Button
               variant="outlined"
-              color="secondary"
               onClick={() => {
                 setName('')
                 setDob('')

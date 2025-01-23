@@ -97,12 +97,7 @@ const EditModal: React.FC<EditModalProps> = ({
         />
 
         <Box sx={{ marginTop: 2 }}>
-          <Button
-            fullWidth
-            variant="contained"
-            color="primary"
-            onClick={handleSaveChanges}
-          >
+          <Button fullWidth variant="contained" onClick={handleSaveChanges}>
             Save Changes
           </Button>
         </Box>

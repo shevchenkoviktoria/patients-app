@@ -1,16 +1,30 @@
 import React, { useState, useEffect } from 'react'
-import { AppBar, Tabs, Tab, Box, Container, Typography } from '@mui/material'
+import {
+  AppBar,
+  Tabs,
+  Tab,
+  Box,
+  Container,
+  Typography,
+  CssBaseline,
+  Divider,
+} from '@mui/material'
+import { ThemeProvider } from '@mui/material/styles'
+
 import AddPatient from './components/AddPatient'
 import PatientList from './components/PatientList'
 import AppointmentList from './components/AppointmentList'
 import { Patients } from './types/Patients'
 import { deletePatient, fetchPatients } from './api/patientApi'
 import { handleError } from './utils/errorHandler'
+import theme, { useResponsive } from './theme/theme'
 
 const App: React.FC = () => {
   const [tabIndex, setTabIndex] = useState(0)
   const [patients, setPatients] = useState<Patients[]>([])
   const [, setAppointments] = useState<any[]>([])
+
+  const { isSmallScreen } = useResponsive()
 
   useEffect(() => {
     const loadPatients = async () => {
@@ -65,82 +79,94 @@ const App: React.FC = () => {
   }
 
   return (
-    <div>
-      <AppBar position="sticky">
-        <Tabs
-          value={tabIndex}
-          onChange={handleTabChange}
-          aria-label="patient-management-tabs"
-          centered
-          indicatorColor="primary"
-          textColor="primary"
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <div>
+        <AppBar position="sticky" color="primary">
+          <Tabs
+            value={tabIndex}
+            onChange={handleTabChange}
+            aria-label="patient-management-tabs"
+            centered={!isSmallScreen}
+            variant={isSmallScreen ? 'scrollable' : 'standard'}
+            scrollButtons="auto"
+            indicatorColor="secondary"
+            textColor="inherit"
+          >
+            <Tab label="Add New Patient" />
+            <Tab label="Patients" />
+            <Tab label="Appointments" />
+            <Tab label="Medical History" />
+            <Tab label="Settings" />
+          </Tabs>
+        </AppBar>
+
+        <Box
+          sx={{
+            padding: 3,
+            backgroundColor: theme.palette.background.default,
+            minHeight: '100vh',
+          }}
         >
-          <Tab label="Add New Patient" />
-          <Tab label="Patients" />
-          <Tab label="Appointments" />
-          <Tab label="Medical History" />
-          <Tab label="Settings" />
-        </Tabs>
-      </AppBar>
+          <Container maxWidth={isSmallScreen ? 'sm' : 'lg'}>
+            {tabIndex === 0 && (
+              <Box>
+                <Typography variant="h5" gutterBottom>
+                  Patient Details
+                </Typography>
+                <Divider />
+                <AddPatient onAddPatient={handleAddPatient} />
+              </Box>
+            )}
 
-      <Box
-        sx={{
-          padding: 3,
-          transition: 'opacity 0.5s ease',
-          opacity: tabIndex !== null ? 1 : 0,
-        }}
-      >
-        <Container>
-          {tabIndex === 0 && (
-            <Box>
-              <Typography variant="h5" gutterBottom>
-                Patient Details
-              </Typography>
-              <AddPatient onAddPatient={handleAddPatient} />
-            </Box>
-          )}
+            {tabIndex === 1 && (
+              <Box>
+                <Typography variant="h5" gutterBottom>
+                  Patients
+                </Typography>
+                <Divider />
+                <PatientList
+                  patients={patients}
+                  onDeletePatient={handleDeletePatient}
+                  onUpdatePatient={handleUpdatePatient}
+                />
+              </Box>
+            )}
 
-          {tabIndex === 1 && (
-            <Box>
-              <Typography variant="h5" gutterBottom>
-                Patients
-              </Typography>
-              <PatientList
-                patients={patients}
-                onDeletePatient={handleDeletePatient}
-                onUpdatePatient={handleUpdatePatient}
-              />
-            </Box>
-          )}
+            {tabIndex === 2 && (
+              <Box>
+                <Typography variant="h5" gutterBottom>
+                  Appointments
+                </Typography>
+                <Divider />
+                <AppointmentList
+                  patients={patients}
+                  onDeletePatient={handleDeletePatient}
+                />
+              </Box>
+            )}
 
-          {tabIndex === 2 && (
-            <Box>
-              <Typography variant="h5" gutterBottom>
-                Appointments
-              </Typography>
-              <AppointmentList
-                patients={patients}
-                onDeletePatient={handleDeletePatient}
-              />
-            </Box>
-          )}
-          {tabIndex === 3 && (
-            <Box>
-              <Typography variant="h5" gutterBottom>
-                Reports
-              </Typography>
-            </Box>
-          )}
-          {tabIndex === 4 && (
-            <Box>
-              <Typography variant="h5" gutterBottom>
-                Settings
-              </Typography>
-            </Box>
-          )}
-        </Container>
-      </Box>
-    </div>
+            {tabIndex === 3 && (
+              <Box>
+                <Typography variant="h5" gutterBottom>
+                  Medical History
+                </Typography>
+                <Divider />
+              </Box>
+            )}
+
+            {tabIndex === 4 && (
+              <Box>
+                <Typography variant="h5" gutterBottom>
+                  Settings
+                </Typography>
+                <Divider />
+              </Box>
+            )}
+          </Container>
+        </Box>
+      </div>
+    </ThemeProvider>
   )
 }
 
