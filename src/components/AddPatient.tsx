@@ -6,9 +6,13 @@ import { addPatient } from '../api/patientApi'
 
 type AddPatientProps = {
   onAddPatient: (newPatient: Patients) => void
+  onRedirectToPatients: () => void
 }
 
-const AddPatient: React.FC<AddPatientProps> = ({ onAddPatient }) => {
+const AddPatient: React.FC<AddPatientProps> = ({
+  onAddPatient,
+  onRedirectToPatients,
+}) => {
   const [name, setName] = useState('')
   const [dob, setDob] = useState('')
   const [condition, setCondition] = useState('')
@@ -35,6 +39,9 @@ const AddPatient: React.FC<AddPatientProps> = ({ onAddPatient }) => {
       setDob('')
       setCondition('')
       setAppointmentDate('')
+      setTimeout(() => {
+        onRedirectToPatients()
+      }, 2000)
     } catch (error) {
       handleError('Error adding patient', error)
       setErrorMessage('Failed to add patient')

@@ -115,7 +115,10 @@ const App: React.FC = () => {
                   Patient Details
                 </Typography>
                 <Divider />
-                <AddPatient onAddPatient={handleAddPatient} />
+                <AddPatient
+                  onAddPatient={handleAddPatient}
+                  onRedirectToPatients={() => setTabIndex(1)}
+                />
               </Box>
             )}
 
