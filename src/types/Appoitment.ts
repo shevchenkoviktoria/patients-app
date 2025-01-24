@@ -1,4 +1,4 @@
-export type Appoitment = {
+export type Appointment = {
   id: string
   name: string
   appointmentDate: string

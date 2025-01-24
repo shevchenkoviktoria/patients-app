@@ -39,7 +39,7 @@ const PatientList: React.FC<PatientListProps> = ({
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [patientToDelete, setPatientToDelete] = useState<string | null>(null)
 
-  const filteredPatients = patients.filter((patient) =>
+  const filteredPatients = patients.filter((patient: Patients) =>
     patient.name.toLowerCase().includes(search.toLowerCase())
   )
 
@@ -104,7 +104,7 @@ const PatientList: React.FC<PatientListProps> = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredPatients.map((patient) => (
+            {filteredPatients.map((patient: Patients) => (
               <TableRow key={patient.id}>
                 <TableCell>{patient.name}</TableCell>
                 <TableCell>{patient.dob}</TableCell>
