@@ -95,7 +95,6 @@ const AddPatient: React.FC<AddPatientProps> = ({
             variant="outlined"
             value={appointmentDate}
             onChange={(e) => setAppointmentDate(e.target.value)}
-            required
             sx={{ maxWidth: 500 }}
             slotProps={{
               inputLabel: {
