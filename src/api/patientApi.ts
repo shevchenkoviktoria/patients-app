@@ -2,7 +2,7 @@ import axios from 'axios'
 import { Patients } from '../types/Patients'
 import { handleError } from '../utils/errorHandler'
 
-export const apiUrl = 'http://localhost:7100/api'
+export const apiUrl = 'http://localhost:5000/api'
 
 // Fetch all patients
 export const fetchPatients = async (): Promise<Patients[]> => {
