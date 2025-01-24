@@ -9,10 +9,10 @@ import {
   Tooltip,
 } from '@mui/material'
 import CancelIcon from '@mui/icons-material/Cancel'
-import { Appoitment } from '../types/Appointment'
+import { Appointment } from '../types/Appointment'
 
 type AppointmentListProps = {
-  patients: Appoitment[]
+  patients: Appointment[]
   onDeletePatient: (id: string) => void
 }
 
