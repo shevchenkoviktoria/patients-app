@@ -45,15 +45,17 @@ const App: React.FC = () => {
   }, [])
 
   const handleAddPatient = (newPatient: Patients) => {
-    setPatients((prevPatients) => [...prevPatients, newPatient])
-    setAppointments((prevAppointments) => [
-      ...prevAppointments,
-      { name: newPatient.name, nextAppointment: newPatient.appointmentDate },
-    ])
+    setPatients((prevPatients: Patients[]) => [...prevPatients, newPatient])
+    setAppointments(
+      (prevAppointments: { name: string; nextAppointment: string }[]) => [
+        ...prevAppointments,
+        { name: newPatient.name, nextAppointment: newPatient.appointmentDate },
+      ]
+    )
   }
 
   const handleUpdatePatient = (updatedPatient: Patients) => {
-    setPatients((prevPatients) =>
+    setPatients((prevPatients: Patients[]) =>
       prevPatients.map((patient) =>
         patient.id === updatedPatient.id ? updatedPatient : patient
       )
@@ -63,7 +65,7 @@ const App: React.FC = () => {
   const handleDeletePatient = async (patientId: string) => {
     try {
       await deletePatient(patientId)
-      setPatients((prevPatients) =>
+      setPatients((prevPatients: Patients[]) =>
         prevPatients.filter((patient) => patient.id !== patientId)
       )
     } catch (error) {

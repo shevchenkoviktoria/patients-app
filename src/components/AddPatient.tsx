@@ -41,7 +41,7 @@ const AddPatient: React.FC<AddPatientProps> = ({
       setAppointmentDate('')
       setTimeout(() => {
         onRedirectToPatients()
-      }, 2000)
+      }, 1500)
     } catch (error) {
       handleError('Error adding patient', error)
       setErrorMessage('Failed to add patient')

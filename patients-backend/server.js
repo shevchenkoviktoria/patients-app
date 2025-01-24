@@ -1,14 +1,13 @@
 const express = require('express')
+const cors = require('cors')
 const sqlite3 = require('sqlite3').verbose()
 const dotenv = require('dotenv')
-const cors = require('cors')
 
 dotenv.config()
 
 const app = express()
 const port = process.env.PORT || 5000
 
-// Middleware
 app.use(express.json())
 app.use(cors())
 

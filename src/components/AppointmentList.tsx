@@ -9,7 +9,7 @@ import {
   Tooltip,
 } from '@mui/material'
 import CancelIcon from '@mui/icons-material/Cancel'
-import { Appoitment } from '../types/Appoitment'
+import { Appoitment } from '../types/Appointment'
 
 type AppointmentListProps = {
   patients: Appoitment[]

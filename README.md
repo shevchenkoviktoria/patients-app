@@ -7,7 +7,6 @@ This is a full-stack Patient Management Application developed using React (front
 <img width="1492" alt="image" src="https://github.com/user-attachments/assets/5c34891a-635c-4dba-8e07-485b9a05bba5" />
 <img width="1490" alt="image" src="https://github.com/user-attachments/assets/9014ac02-2ef5-4ddd-95bc-ad1fafb69473" />
 
-
 ## Technologies Used
 
 - **Frontend:** React, TypeScript, Material UI
@@ -67,7 +66,7 @@ The app will be available at `http://localhost:3000`.
 3. Create a `.env` file and configure the database path and server port:
 
 `PORT=5000`
-`DB_PATH=./patients.db`
+`DB_PATH=./database.db`
 
 4. Start the backend server: `node server.js`
 
@@ -84,25 +83,26 @@ If you need to manually create the database, you can use the following schema:
 
 -- Create the patients table
 CREATE TABLE patients (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    dob TEXT NOT NULL,
-    condition TEXT NOT NULL,
-    appointment_date TEXT NOT NULL
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+name TEXT NOT NULL,
+dob TEXT NOT NULL,
+condition TEXT NOT NULL,
+appointment_date TEXT NOT NULL
 );
 
 -- Create the appointments table with a foreign key reference
 CREATE TABLE appointments (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    patient_id INTEGER,
-    appointment_date TEXT NOT NULL,
-    details TEXT,
-    FOREIGN KEY(patient_id) REFERENCES patients(id)
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+patient_id INTEGER,
+appointment_date TEXT NOT NULL,
+details TEXT,
+FOREIGN KEY(patient_id) REFERENCES patients(id)
 );
 
 #### Open http://localhost:3000 in your browser
 
 ### API Endpoints
+
 Patients:
 `GET /api/patients` - Fetch all patients.
 `GET /api/patients/:id` - Fetch a specific patient by ID.
@@ -114,9 +114,8 @@ Appointments:
 `POST /api/appointments` - Create a new appointment.
 `DELETE /api/appointments/:id` - Delete an appointment by ID.
 
-### Testing 
+### Testing
 
 Run `npm test -- --watchAll`
 
 <img width="730" alt="image" src="https://github.com/user-attachments/assets/7c1d7d98-ee55-44fa-8391-19b20553665b" />
-
