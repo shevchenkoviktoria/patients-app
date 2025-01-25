@@ -11,6 +11,18 @@ const port = process.env.PORT || 5000
 app.use(express.json())
 app.use(cors())
 
+// Basic logger
+const logger = {
+  info: (msg) => console.log(msg),
+  error: (msg) => console.error(msg),
+}
+
+// Reusable error handler
+const handleError = (res, message, error) => {
+  logger.error(`${message}: ${error.message}`)
+  return res.status(500).json({ error: message })
+}
+
 // Database SQLite
 const db = new sqlite3.Database(process.env.DB_PATH, (err) => {
   if (err) {
@@ -24,12 +36,9 @@ const db = new sqlite3.Database(process.env.DB_PATH, (err) => {
 
 // Get all patients
 app.get('/api/patients', (req, res) => {
-  db.all('SELECT * FROM patients', [], (err, rows) => {
-    if (err) {
-      console.error('Error fetching patients:', err.message)
-      return res.status(500).json({ error: 'Error fetching patients' })
-    }
-    res.json(rows)
+  db.all('SELECT * FROM patients', [], (error, rows) => {
+    if (error) return handleError(res, 'Error fetching patients', error)
+    return res.json(rows)
   })
 })
 
