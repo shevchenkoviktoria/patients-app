@@ -116,7 +116,7 @@ app.delete('/api/patients/:id', (req, res) => {
   )
 })
 
-// ------------------ APPOINTMENT ROUTES ------------------ //
+// ------------ APPOINTMENT ROUTES ------------------ //
 
 // Get all appointments
 app.get('/api/appointments', (req, res) => {
