@@ -33,7 +33,7 @@ const db = new sqlite3.Database(process.env.DB_PATH, (error) => {
   logger.info('Connected to the SQLite database')
 })
 
-// -------------------- PATIENT ROUTES -------------------- //
+// -------------------- PATIENT ROUTES ------------------ //
 
 // Get all patients
 app.get('/api/patients', (req, res) => {
