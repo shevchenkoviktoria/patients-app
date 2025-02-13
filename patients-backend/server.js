@@ -12,7 +12,7 @@ const port = process.env.PORT || 5000
 app.use(express.json())
 app.use(cors())
 
-// Basic logger
+// Basic logger //
 const logger = {
   info: (msg) => console.log(msg),
   error: (msg) => console.error(msg),
